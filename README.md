@@ -5,19 +5,29 @@ How to use
 
 open bash:
     1,telnet 127.0.0.1 5000
+    
     2,user Gearslogy (this cmd is register user to control the renderer)
+    
     3,kc::help (kc::help ,kc:: is a command prefix,it have kc::help,kc::lsr,kc::lstask,kc::killtask)
+    
     4,sc::help (sc::help ,sc:: is a command prefix,it send command to the renderer)
+    
 
 
 sc:: command exp:
     kc::lsr (list all of the client that had connected the server)
+    
     {
         HOSTNAME,TCPPORT,IP,AUTH
+        
         render_001,6,127.0.0.1,RENDERER
+        
         render_002,12,192.168.10.198,RENDERER
+        
         render_003,14,192.168.10.200,RENDERER
+        
         Gearslogy,15,127.0.0.1,CONTORLLER
+        
         
     }
     sc::6::ls -al /  (meaning of you can send a command to the tcp port 6) 
