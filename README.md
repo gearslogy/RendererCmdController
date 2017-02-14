@@ -4,6 +4,7 @@ Use a tcp server control the renderer's plugin and system settings.
 How to use
 
 open bash:
+
     1,telnet 127.0.0.1 5000
     
     2,user Gearslogy (this cmd is register user to control the renderer)
