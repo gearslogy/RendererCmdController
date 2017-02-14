@@ -16,6 +16,7 @@ open bash:
 
 
 sc:: command exp:
+
     kc::lsr (list all of the client that had connected the server)
     
     {
@@ -61,4 +62,6 @@ sc:: command exp:
     drwxrwxrwx.   25 root root 49152 Feb 14 13:08 tmp
     drwxr-xr-x.   16 root root  4096 Jun  2  2016 usr
     drwxr-xr-x.   23 root root  4096 Mar 28  2016 var
+    
+    sc::*::ls -al / (sending cmd to all renderers)
             
