@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#mount -t cifs -o gid="500",uid="500",username="baoqiang2014",password="" //192.168.10.10/Proj/ /home/gearslogy/netdisk/baoqiang
+
+choose=$(ls /mnt/ | grep Proj_Comp)
+if [ "$choose" == "" ]; then
+{
+    mkdir /mnt/Proj_Comp
+}
+fi
+
+chmod -R 777 /mnt/Proj_Comp
+#mount.cifs -o .... 
+mount.cifs -o username="Administrator",password="Server2008",uid=`hostname`,gid=`hostname`,dir_mode=0777,file_mode=0777 //192.168.10.108/Proj_Comp /mnt/Proj_Comp
+#
+#gid and uid use the "id gearslogy"
+
+
+#unmount /mnt/baoqiang
+
+#3.用root用户，编辑 vi /etc/fstab, 在最后面加入：
+
+
+#//192.168.1.12/shared /mnt/work   cifs    rw,gid=500,uid=500,user=Administrator,password=123456 0 0
+#这样linux机器重新启动都可以自动挂载windows上的共享目录

@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+#mount -t cifs -o gid="500",uid="500",username="baoqiang2014",password="" //192.168.10.10/Proj/ /home/gearslogy/netdisk/baoqiang
+
+choose=$(ls /mnt/ | grep Baoqiang)
+if [ "$choose" == "" ]; then
+{
+    mkdir /mnt/Baoqiang_Ma_01
+}
+fi
+
+#mount.cifs -o .... 
+mount.cifs -o username="baoqiang2014",password="",uid="gearslogy",gid="gearslogy",dir_mode=0777,file_mode=0777 //192.168.10.10/Proj/ /mnt/Baoqiang_Ma_01
+
+echo "mount the baoqiang ok"
+#
+#gid and uid use the "id gearslogy"
+
+
+#unmount /mnt/baoqiang
+
+#3.用root用户，编辑 vi /etc/fstab, 在最后面加入：
+
+
+#//192.168.1.12/shared /mnt/work   cifs    rw,gid=500,uid=500,user=Administrator,password=123456 0 0
+#这样linux机器重新启动都可以自动挂载windows上的共享目录
+
+
+
+#另外一种方法
+#ubuntu 12.04
+
+#sudo mount.cifs //192.168.1.1/your/file/path /media/local/mount/point/   -o user=your-name-on-server,password=password,uid=your-name-on-ubuntu,gid=your-name-on-local,sec=ntlmv2  
+
+#成功后，修改/etc/fstab
+
+#//192.168.1.1/your/file/path   /media/local/mount/point/       cifs    user=your-name-on-server,password=password,uid=your-name-on-ubuntu,gid=your-name-on-local,sec=ntlmv2     0       0 
+
+#重启即可。
+
+
+#fedora14
+
+#sudo mount.cifs //192.168.1.1/your/file/path /media/local/mount/point/ -o user=your-name-on-server,password=password,uid=your-name-on-ubuntu,gid=your-name-on-local 
+
+#成功后，修改/etc/fstab
+
+#//192.168.1.1/your/file/path  /media/local/mount/point/       cifs    user=your-name-on-server,password=password,uid=your-name-on-ubuntu,gid=your-name-on-local     0       0 
+
+#重启即可。
+
+
+# v1->mount -a 有作用的:
+#/192.168.10.10/Proj  /mnt/Baoqiang_Ma_01  cifs defaults,username="baoqiang2014",password="",gid=500,uid=500,iocharset=utf8,sec=ntlm  0  2
+
