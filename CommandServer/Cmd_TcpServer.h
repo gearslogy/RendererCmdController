@@ -49,6 +49,7 @@ namespace TopVertex
         Client_MemberInfo *findMemberBySocketID(int socketID);
         QByteArray clientsAsBytes();
         QList <Client_MemberInfo*> _clients;
+        int getClientNum();
         void registerUser(QString hostName,int socketId);
         void registerRenderer(QString hostName,int socketId);
         void ERROR_MESSAGE(QString MSG,int socketID);

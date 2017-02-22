@@ -31,12 +31,15 @@ namespace TopVertex
 
     }
     //
-    void Cmd_TcpServer::buildingKeyword()
+    void Cmd_TcpServer::buildingKeyword() //register our keyworld,server do not accept other commands
     {
         _parse._keyword.push_back("lsr");
         _parse._keyword.push_back("help");
         _parse._keyword.push_back("lstask");
         _parse._keyword.push_back("killtask");
+        _parse._keyword.push_back("count");
+
+
     }
     bool Cmd_TcpServer::findAuthBySocketID(int socketID)
     {
@@ -48,6 +51,18 @@ namespace TopVertex
             }
         }
         return false;
+    }
+    int Cmd_TcpServer::getClientNum()
+    {
+        int num = 0;
+        foreach (Client_MemberInfo *m, _clients) {
+            if(m->_auth == false)
+            {
+                num += 1;
+            }
+
+        }
+        return num;
     }
 
     bool Cmd_TcpServer::socketIsExist(int socketID)
@@ -352,6 +367,15 @@ namespace TopVertex
                 emit signal_socketSendData(array,taskSocketID);
 
             }
+            else if(key[1] == QString("count"))
+            {
+                QByteArray array;
+                int num = getClientNum();
+                QString snum = QString::number(num);
+                array.push_back(snum.toLocal8Bit());
+                emit signal_socketSendData(array,socketID);
+            }
+
             else
             {
                 ERROR_MESSAGE("Error format maybe is: kc::lstask::rendererID,kc::killtask::rendererID::pid,kc::help,kc::lsr.....\n",socketID);
