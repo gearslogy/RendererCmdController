@@ -46,6 +46,8 @@ namespace TopVertex
     private:
         bool findAuthBySocketID(int socketID);
         bool socketIsExist(int socketID);
+        Client_MemberInfo* nameIsExist(QString name);
+
         Client_MemberInfo *findMemberBySocketID(int socketID);
         QByteArray clientsAsBytes();
         QList <Client_MemberInfo*> _clients;

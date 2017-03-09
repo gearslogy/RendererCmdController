@@ -1,7 +1,7 @@
 #include "Cmd_TcpServer.h"
 #include <QThread>
 #include <QDataStream>
-
+#include<stdexcept>
 #define HOSTPORT 5000
 
 
@@ -38,7 +38,7 @@ namespace TopVertex
         _parse._keyword.push_back("lstask");
         _parse._keyword.push_back("killtask");
         _parse._keyword.push_back("count");
-
+        _parse._keyword.push_back("exname");
 
     }
     bool Cmd_TcpServer::findAuthBySocketID(int socketID)
@@ -84,6 +84,18 @@ namespace TopVertex
             {
                 return m;
             }
+        }
+        return 0;
+    }
+
+    Client_MemberInfo*Cmd_TcpServer::nameIsExist(QString name)
+    {
+        foreach (Client_MemberInfo* m, _clients) {
+            if(m->_hostName == name)
+            {
+                return m;
+            }
+
         }
         return 0;
     }
@@ -367,13 +379,65 @@ namespace TopVertex
                 emit signal_socketSendData(array,taskSocketID);
 
             }
-            else if(key[1] == QString("count"))
+            else if(keys[1] == QString("count"))
             {
+                if(keys.size()>=3)
+                {
+                    ERROR_MESSAGE("Wrong format,kc::count" + keys[2] + QString("\n"),socketID);
+                    return ;
+                }
                 QByteArray array;
                 int num = getClientNum();
                 QString snum = QString::number(num);
                 array.push_back(snum.toLocal8Bit());
+                array.push_back("\n");
                 emit signal_socketSendData(array,socketID);
+            }
+            else if(keys[1] == QString("exname"))
+            {
+                if(keys[2]=="" || keys.size()!=3)
+                {
+                    ERROR_MESSAGE("Wrong format,kc::exname::xxx " + keys[2] + QString("\n"),socketID);
+                    return ;
+                }
+                Client_MemberInfo *m = nameIsExist(keys[2]);
+                if(m!=0)
+                {
+                    QByteArray array;
+                    array.push_back("{\n");
+                    QString _name = m->_hostName;
+                    QString _ip = m->_ip;
+                    QString _tcpid =  QString::number(m->_socketID);
+                    QString _auth;
+                    if(m->_auth)
+                        _auth = "Renderer";
+                    else
+                        _auth = "Controller";
+
+                    array.push_back("name:");
+                    array.push_back(_name.toLocal8Bit());
+                    array.push_back("\n");
+
+                    array.push_back("ip:");
+                    array.push_back(_ip.toLocal8Bit());
+                    array.push_back("\n");
+
+                    array.push_back("SocketID:");
+                    array.push_back(_tcpid.toLocal8Bit());
+                    array.push_back("\n");
+
+                    array.push_back("auth:");
+                    array.push_back(_auth.toLocal8Bit());
+                    array.push_back("\n");
+                    array.push_back("}\n");
+                    emit signal_socketSendData(array,socketID);
+                }
+                else // member do not exist
+                {
+                    ERROR_MESSAGE("do not existed " + keys[2],socketID);
+                }
+
+
             }
 
             else
